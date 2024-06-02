@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resultados de Cotización</title>
+  </head>
+  <body>
+    <h2>Resultados de Cotización</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Precio Total</th>
+        </tr>
+      </thead>
+      <tbody id="resultsTableBody"></tbody>
+    </table>
+
+    <script>
+      const data = JSON.parse(localStorage.getItem("formData"));
+      const tableBody = document.getElementById("resultsTableBody");
+
+      const productPrices = {
+        "Producto 1": 10.0,
+        "Producto 2": 20.0,
+        "Producto 3": 30.0,
+        "Producto 4": 40.0,
+      };
+
+      for (const product in data) {
+        if (product.startsWith("product")) {
+          const productId = product.replace("product", "Producto ");
+          const quantity = data[product].quantity || 0;
+          const unitPrice = productPrices[productId];
+          const totalPrice = quantity * unitPrice;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${productId}</td>
+                    <td>${quantity}</td>
+                    <td>${unitPrice}</td>
+                    <td>${totalPrice}</td>
+                `;
+          tableBody.appendChild(row);
+        }
+      }
+
+      // Mostrar la información del formulario
+      for (const key in data) {
+        if (!key.startsWith("product")) {
+          const infoRow = document.createElement("tr");
+          infoRow.innerHTML = `
+        <td colspan="4">
+            ${key}: ${data[key]}
+        </td>
+    `;
+          tableBody.appendChild(infoRow);
+        }
+      }
+    </script>
+  </body>
+</html>

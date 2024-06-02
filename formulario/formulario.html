@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario Solicitud de Cotización</title>
+  </head>
+  <body>
+    <h2>Formulario Solicitud de Cotización</h2>
+    <form id="quotationForm">
+      <label for="name">Nombres y Apellidos:</label><br />
+      <input type="text" id="name" name="name" required /><br /><br />
+
+      <label for="city">Ciudad:</label><br />
+      <select id="city" name="city" required>
+        <option value="Bogotá">Bogotá</option>
+        <option value="Medellín">Medellín</option>
+        <option value="Cali">Cali</option>
+        <option value="Barranquilla">Barranquilla</option>
+        <option value="Cartagena">Cartagena</option></select
+      ><br /><br />
+
+      <label for="address">Dirección:</label><br />
+      <input type="text" id="address" name="address" required /><br /><br />
+
+      <label for="phone">Celular:</label><br />
+      <input type="tel" id="phone" name="phone" required /><br /><br />
+
+      <label>Seleccione los productos a cotizar:</label><br />
+      <input
+        type="checkbox"
+        id="product1"
+        name="products[]"
+        value="Producto 1"
+      />
+      <label for="product1">Producto 1</label>
+      <input
+        type="number"
+        id="quantity1"
+        name="quantity1"
+        placeholder="Cantidad"
+      /><br />
+
+      <input
+        type="checkbox"
+        id="product2"
+        name="products[]"
+        value="Producto 2"
+      />
+      <label for="product2">Producto 2</label>
+      <input
+        type="number"
+        id="quantity2"
+        name="quantity2"
+        placeholder="Cantidad"
+      /><br />
+
+      <input
+        type="checkbox"
+        id="product3"
+        name="products[]"
+        value="Producto 3"
+      />
+      <label for="product3">Producto 3</label>
+      <input
+        type="number"
+        id="quantity3"
+        name="quantity3"
+        placeholder="Cantidad"
+      /><br />
+
+      <input
+        type="checkbox"
+        id="product4"
+        name="products[]"
+        value="Producto 4"
+      />
+      <label for="product4">Producto 4</label>
+      <input
+        type="number"
+        id="quantity4"
+        name="quantity4"
+        placeholder="Cantidad"
+      /><br /><br />
+
+      <button type="button" onclick="submitForm()">Enviar Datos</button>
+      <button type="button" onclick="cancelForm()">Cancelar</button>
+    </form>
+
+    <script>
+      function submitForm() {
+        const form = document.getElementById("quotationForm");
+        const formData = new FormData(form);
+        const data = {};
+
+        formData.forEach((value, key) => {
+          if (key.startsWith("quantity")) {
+            const productId = key.replace("quantity", "product");
+            if (!data[productId]) {
+              data[productId] = {};
+            }
+            data[productId].quantity = value;
+          } else if (key === "products[]") {
+            data[value] = data[value] || {};
+          } else {
+            data[key] = value;
+          }
+        });
+
+        // Simulamos el envío a una base de datos
+        localStorage.setItem("formData", JSON.stringify(data));
+
+        // Redirigimos a la página de resultados
+        window.location.href = "resultados.html";
+      }
+
+      function cancelForm() {
+        window.location.href = "index.html"; // Asumiendo que index.html es la página inicial
+      }
+    </script>
+  </body>
+</html>
